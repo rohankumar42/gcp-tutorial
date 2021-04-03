@@ -33,32 +33,41 @@ def package_response(func):
     return packaged
 
 
-def _get_user_bio_internal(user_id):
-    query = 'SELECT Bio FROM Users WHERE UserId = @user_id'
+def _get_user_info_internal(user_id):
+    query = '''
+    SELECT UserId, UserName, FirstName, LastName, Bio
+    FROM Users WHERE UserId = @user_id
+    '''
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
             query, params={'user_id': user_id},
             param_types={'user_id': spanner.param_types.INT64})
 
         for row in results:
-            bio = row[0]
-            print(f'Got bio for user id {user_id}: {bio}')
-            return bio
+            info = {
+                "user_id": row[0],
+                "user_name": row[1],
+                "first_name": row[2],
+                "last_name": row[3],
+                "bio": row[4]
+            }
+            print(f'Got info for user id {user_id}: {info}')
+            return info
 
     raise ValueError(f"No user with user id {user_id} found")
 
 
 @package_response
-def get_user_bio(request):
+def get_user_info(request):
     request_json = request.get_json(silent=True)
     user_id = request_json['user_id']
-    print(f'Trying to get bio for user id {user_id}')
-    bio = _get_user_bio_internal(user_id)
-    return {'bio': bio}
+    print(f'Trying to get info for user id {user_id}')
+    info = _get_user_info_internal(user_id)
+    return info
 
 
 def _create_new_user_internal(user_name, first_name, last_name, bio):
-    user_id = uuid.uuid1().int >> 64  # Generate unique user id
+    user_id = uuid.uuid1().int >> 96  # Generate unique user id
 
     def insert_user(transaction):
         transaction.insert(
@@ -85,7 +94,7 @@ def create_new_user(request):
 
 
 def _add_new_tweet_internal(user_id, contents):
-    tweet_id = uuid.uuid1().int >> 64  # Generate unique tweet id
+    tweet_id = uuid.uuid1().int >> 96  # Generate unique tweet id
 
     def insert_tweet(transaction):
         transaction.insert(
@@ -110,18 +119,28 @@ def add_new_tweet(request):
     return {'tweet_id': tweet_id}
 
 
-def _get_twitter_feed_internal():
+def _get_twitter_feed_internal(user_id=None):
     query = '''
     SELECT
         T.Timestamp, T.TweetId, T.Contents, T.UserId,
         U.UserName, U.FirstName, U.LastName
     FROM Tweets AS T JOIN Users AS U USING (UserId)
+    {}
     ORDER BY T.Timestamp DESC
     '''
+    if user_id is None:
+        query = query.format('')
+        params = None
+        param_types = None
+    else:
+        query = query.format('WHERE U.UserId = @user_id')
+        params = {'user_id': user_id}
+        param_types = {'user_id': spanner.param_types.INT64}
 
     tweets = []
     with database.snapshot() as snapshot:
-        results = snapshot.execute_sql(query)
+        results = snapshot.execute_sql(
+            query, params=params, param_types=param_types)
 
         for row in results:
             tweet_details = {
@@ -142,6 +161,9 @@ def _get_twitter_feed_internal():
 
 @package_response
 def get_twitter_feed(request):
-    print('Fetching latest Twitter feed')
-    feed = _get_twitter_feed_internal()
+    request_json = request.get_json(silent=True)
+    user_id = request_json['user_id'] if request_json else None
+    print(f'Fetching latest Twitter feed (user_id = {user_id})')
+    feed = _get_twitter_feed_internal(user_id)
+    print(f'Got feed: {feed}')
     return {'feed': feed}

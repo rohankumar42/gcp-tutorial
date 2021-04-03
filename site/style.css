@@ -23,7 +23,7 @@ body {
 .tweet {
     text-align: left;
     background-color: black;
-    border: 2px solid black;
+    border: 2px solid;
     border-color: whitesmoke;
     padding-left: 25px;
     padding-right: 25px;
@@ -40,6 +40,14 @@ body {
     padding-right: 5px;
 }
 
+.fullName:hover {
+    text-decoration: underline;
+}
+
+.userName {
+    color: lightgrey;
+}
+
 .time {
     float: right;
     color: lightgrey;
@@ -47,4 +55,48 @@ body {
 
 .tweetContents {
     font-size: medium;
+}
+
+#homeDiv {
+    width: 5%;
+    text-align: center;
+    background-color: black;
+    border: 2px solid;
+    border-color: whitesmoke;
+    padding: 10px;
+    margin-left: 5%;
+    margin-top: 20px;
+}
+
+#homeDiv:hover {
+    background-color: #080808;
+}
+
+#userInfoDiv {
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: black;
+    border: 2px solid black;
+    border-color: whitesmoke;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+
+.fullNameProfile {
+    text-align: center;
+    font-size: larger;
+    font-weight: bold;
+    margin-bottom: -8pt;
+}
+
+.userNameProfile {
+    color: lightgrey;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
