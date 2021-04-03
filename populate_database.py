@@ -1,6 +1,7 @@
 import requests
 
-CLOUD_FUNCTIONS_URL = ''  # Enter your cloud functions base URL here
+# Enter your cloud functions base URL here
+CLOUD_FUNCTIONS_URL = ''
 
 USERS = [
     ('jack', 'Jack', 'Dorsey', 'My friends call me Big Beard'),
@@ -43,7 +44,7 @@ def add_user(user_name, first_name, last_name, bio):
 
 
 def add_tweet(user_name, contents):
-    url = CLOUD_FUNCTIONS_URL + '/add_new_tweet'
+    url = CLOUD_FUNCTIONS_URL + '/create_new_tweet'
     response = requests.post(url, json={
         'user_id': USER_NAME_TO_ID[user_name],
         'contents': contents

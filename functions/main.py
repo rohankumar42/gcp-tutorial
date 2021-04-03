@@ -93,7 +93,7 @@ def create_new_user(request):
     return {'user_id': user_id}
 
 
-def _add_new_tweet_internal(user_id, contents):
+def _create_new_tweet_internal(user_id, contents):
     tweet_id = uuid.uuid1().int >> 96  # Generate unique tweet id
 
     def insert_tweet(transaction):
@@ -109,13 +109,13 @@ def _add_new_tweet_internal(user_id, contents):
 
 
 @package_response
-def add_new_tweet(request):
+def create_new_tweet(request):
     request_json = request.get_json(silent=True)
     user_id = request_json['user_id']
     contents = request_json['contents']
     print(
         f'Tweeting new tweet for user id {user_id} with content "{contents}"')
-    tweet_id = _add_new_tweet_internal(user_id, contents)
+    tweet_id = _create_new_tweet_internal(user_id, contents)
     return {'tweet_id': tweet_id}
 
 
