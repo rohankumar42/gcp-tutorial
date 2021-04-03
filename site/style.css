@@ -1,0 +1,50 @@
+body {
+    font-family: 'Helvetica Neue';
+    color: white;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('img/uncommon_background.png');
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+}
+
+#mainSection {
+    width: 700px;
+    margin: 0 auto;
+}
+
+#title {
+    text-align: center;
+    margin-bottom: 75px;
+}
+
+#tweetsDiv {
+    text-align: center;
+}
+
+.tweet {
+    text-align: left;
+    background-color: black;
+    border: 2px solid black;
+    border-color: whitesmoke;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.tweet:hover {
+    background-color: #080808;
+}
+
+.fullName {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.time {
+    float: right;
+    color: lightgrey;
+}
+
+.tweetContents {
+    font-size: medium;
+}
