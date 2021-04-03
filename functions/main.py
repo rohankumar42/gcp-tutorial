@@ -3,8 +3,8 @@ import uuid
 from datetime import timezone, timedelta
 from google.cloud import spanner
 
-instance_id = 'test-instance'
-database_id = 'test-database'
+instance_id = 'demo-instance'
+database_id = 'demo-database'
 
 client = spanner.Client()
 instance = client.instance(instance_id)

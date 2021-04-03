@@ -1,10 +1,12 @@
+var cloud_functions_url = ''; // Enter your cloud functions base URL here
+
 const getTwitterFeed = async(user_id = null) => {
     var tweetsDiv = document.getElementById('tweetsDiv');
     tweetsDiv.textContent = 'Getting latest Tweets...';
 
     console.log('Fetching latest Twitter feed');
     var body = user_id == null ? '' : JSON.stringify({ 'user_id': user_id });
-    const response = await fetch('https://us-central1-lexical-descent-308922.cloudfunctions.net/get_twitter_feed', {
+    const response = await fetch(cloud_functions_url + '/get_twitter_feed', {
         method: 'POST',
         body: body,
         headers: {
@@ -58,7 +60,7 @@ const getUserInfo = async(user_id) => {
     var userInfoDiv = document.getElementById('userInfoDiv');
     userInfoDiv.textContent = 'Getting user info...';
 
-    const response = await fetch('https://us-central1-lexical-descent-308922.cloudfunctions.net/get_user_info', {
+    const response = await fetch(cloud_functions_url + '/get_user_info', {
         method: 'POST',
         body: JSON.stringify({ 'user_id': user_id }),
         headers: {

@@ -1,6 +1,6 @@
 import requests
 
-CLOUD_FUNCTIONS_URL = 'https://us-central1-lexical-descent-308922.cloudfunctions.net'
+CLOUD_FUNCTIONS_URL = ''  # Enter your cloud functions base URL here
 
 USERS = [
     ('jack', 'Jack', 'Dorsey', 'My friends call me Big Beard'),
