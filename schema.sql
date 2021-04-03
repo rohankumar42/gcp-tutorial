@@ -3,7 +3,6 @@ CREATE TABLE Users (
     UserName STRING(128) NOT NULL,
     FirstName STRING(1024) NOT NULL,
     LastName STRING(1024) NOT NULL,
-    BirthDate DATE,
     Bio STRING(MAX),
 ) PRIMARY KEY (UserId);
 
